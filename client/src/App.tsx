@@ -1,11 +1,15 @@
 
-import './App.css'
+import './index.css'
 
 function App() {
 
 
   return (
     <>
+
+    <div className='h-screen bg-black '>
+
+    </div>
       
     </>
   )
