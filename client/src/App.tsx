@@ -3,7 +3,7 @@ import './index.css'
 
 function App() {
 
-  const [messages, setMessages] = useState(["hi there"])
+  const [messages, setMessages] = useState(["hi there", "hello", "how are u"])
   const [input, setInput] = useState("")
   const wsRef = useRef(null)
 
@@ -11,19 +11,40 @@ function App() {
     const ws = new WebSocket("ws://localhost:8080")
 
     ws.onmessage = (event) => {
-      setMessages(m => [...m, event.data])
+      const data = JSON.parse(event.data)
+      setMessages(m => [...m, data.message])
     }
 
+
+
+    // return () => {
+    //   ws.close()
+    // }
     wsRef.current = ws
 
-    return () => {
-      ws.close()
+
+    ws.onopen = () => {
+
+      ws.send(JSON.stringify({
+        type: "join",
+        payload: {
+          roomId: "red"
+        }
+      }))
     }
   }, [])
 
   const sendMessage = () => {
     if (!input.trim()) return
-    wsRef.current?.send(input)
+
+    wsRef.current?.send(JSON.stringify({
+      type: "chat",
+      payload: {
+        roomId: "red",   // 👈 ADD THIS
+        message: input
+      }
+    }))
+
     setInput("")
   }
 

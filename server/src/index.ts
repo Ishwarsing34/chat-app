@@ -50,7 +50,7 @@ wss.on("connection", (socket: WebSocket) => {
           if (client.readyState === WebSocket.OPEN) {
             client.send(
               JSON.stringify({
-                type: "chat",
+             
                 message: chatMessage,
               })
             );
